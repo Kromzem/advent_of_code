@@ -3,6 +3,8 @@ extern crate lazy_static;
 
 use std::{fs, time::Instant};
 
+mod day_12;
+mod day_12_part_2;
 mod day_eight;
 mod day_eight_part_two;
 mod day_eleven;
@@ -23,10 +25,10 @@ mod day_two;
 mod day_two_part_two;
 
 fn main() {
-    let input = fs::read_to_string("./inputs/day_eleven.txt").expect("Should read input file");
+    let input = fs::read_to_string("./inputs/day_12.txt").expect("Should read input file");
 
     let now = Instant::now();
-    let solution = day_eleven::solve(&input);
+    let solution = day_12_part_2::solve(&input);
     let duration = now.elapsed();
 
     println!("Solution ({}ms): {}", duration.as_millis(), solution);

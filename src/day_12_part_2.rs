@@ -1,0 +1,142 @@
+use std::time::Instant;
+
+use rayon::prelude::*;
+
+pub fn solve(input: &str) -> usize {
+    input.lines().par_bridge().map(count_possibilities).sum()
+}
+
+fn count_possibilities(line: &str) -> usize {
+    let stop = Instant::now();
+    println!("Checking '{}' ...", line);
+
+    // let (pattern, target) = line.split_once(' ').unwrap();
+
+    let (pattern_chars, target_counts) = unfold(line);
+
+    // let pattern_chars: Vec<char> = pattern.chars().collect();
+    // let target_counts: Vec<usize> = target
+    //     .split(',')
+    //     .map(|x| usize::from_str_radix(x, 10).unwrap())
+    //     .collect();
+
+    let count_chars_amount = pattern_chars.iter().filter(|&&c| c == '#').count();
+    let target_counts_sum = target_counts.iter().sum();
+
+    let possibilities = usize::pow(
+        2,
+        pattern_chars.iter().filter(|&&c| c == '?').count() as u32,
+    );
+
+    let mut sum = 0;
+    for mut i in 0..possibilities {
+        if i.count_ones() as usize + count_chars_amount != target_counts_sum {
+            continue;
+        }
+
+        // print!("\rTry {:b} ...", i);
+
+        let mut group_index = 0;
+        let mut count = 0;
+
+        // println!();
+        // println!("Try {:b}", i);
+
+        // let mut check = String::new();
+        let mut failure = false;
+        for j in 0..pattern_chars.len() {
+            let mut c = pattern_chars[j];
+
+            if c == '?' {
+                if i & 1 != 0 {
+                    c = '#';
+                } else {
+                    c = '.';
+                }
+
+                i = i >> 1;
+            }
+
+            // check.push(c);
+
+            if c == '#' {
+                if group_index >= target_counts.len() {
+                    failure = true;
+                    break;
+                }
+
+                count += 1;
+                continue;
+            }
+
+            if count == 0 {
+                continue;
+            }
+
+            // print!("{}, ", count);
+            if count != target_counts[group_index] {
+                failure = true;
+                break;
+            }
+
+            group_index += 1;
+            count = 0;
+        }
+        // println!("{}", count);
+        // println!("{}", check);
+
+        if failure {
+            // println!("Failure");
+            continue;
+        }
+
+        if count > 0 {
+            if count != target_counts[group_index] {
+                // println!("Failure");
+                continue;
+            }
+
+            group_index += 1;
+        }
+
+        if group_index == target_counts.len() {
+            sum += 1;
+
+            // println!();
+            // println!("Found: {}", sum);
+            // println!();
+            // println!("Success");
+        } else {
+            // println!("Failure");
+        }
+    }
+
+    // println!("Possibilities: {}", sum);
+
+    // println!();
+
+    println!(
+        "Finished '{}' with {} in {}ms!",
+        line,
+        sum,
+        stop.elapsed().as_millis()
+    );
+
+    sum
+}
+
+fn unfold(line: &str) -> (Vec<char>, Vec<usize>) {
+    let (pattern, target) = line.split_once(' ').unwrap();
+
+    let pattern_unfold: Vec<&str> = (0..5).map(|_| pattern).collect();
+    let target_unfold: Vec<&str> = (0..5).map(|_| target).collect();
+
+    (
+        pattern_unfold.join("?").chars().collect(),
+        target_unfold
+            .join(",")
+            .split(',')
+            .map(|x| usize::from_str_radix(x, 10).unwrap())
+            .collect(),
+    )
+}

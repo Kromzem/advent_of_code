@@ -12,7 +12,7 @@
 
 use std::{fs, time::Instant};
 
-use year_2024::{day_1::Day1, day_2::Day2};
+use year_2024::{day_1::Day1, day_2::Day2, day_3::Day3};
 
 // mod day_12;
 // mod day_12_part_2;
@@ -39,7 +39,7 @@ mod year_2024;
 fn main() {
     // let input = fs::read_to_string("./inputs/day_12.txt").expect("Should read input file");
 
-    let puzzle = Day2::new();
+    let puzzle = Day3::new();
     perform_solution("Part 1", || puzzle.solve_part_one());
     perform_solution("Part 2", || puzzle.solve_part_two());
 }

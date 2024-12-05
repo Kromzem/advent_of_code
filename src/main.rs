@@ -1,10 +1,10 @@
 use std::{fs, time::Instant};
 
-use year_2024::{day_1::Day1, day_2::Day2, day_3::Day3, day_4::Day4};
+use year_2024::{day_1::Day1, day_2::Day2, day_3::Day3, day_4::Day4, day_5::Day5};
 mod year_2024;
 
 fn main() {
-    let puzzle = Day4::new();
+    let puzzle = Day5::new();
     perform_solution("Part 1", || puzzle.solve_part_one());
     perform_solution("Part 2", || puzzle.solve_part_two());
 }

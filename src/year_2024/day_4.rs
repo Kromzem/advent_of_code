@@ -1,4 +1,4 @@
-use crate::Puzzle;
+use crate::{Grid, Puzzle};
 
 pub struct Day4 {
     dirs: Vec<(i8, i8)>,
@@ -78,14 +78,14 @@ impl Day4 {
         sum
     }
 
-    fn count_for_x(&self, from_coord: Coord, grid: &Grid) -> i64 {
+    fn count_for_x(&self, from_coord: Coord, grid: &Grid<char>) -> i64 {
         self.dirs
             .iter()
             .filter(|d| self.check_dir(**d, from_coord, grid))
             .count() as i64
     }
 
-    fn check_dir(&self, dir: (i8, i8), from_coord: Coord, grid: &Grid) -> bool {
+    fn check_dir(&self, dir: (i8, i8), from_coord: Coord, grid: &Grid<char>) -> bool {
         for (i, c) in self.sequence.iter().enumerate() {
             let Some(x) = from_coord
                 .x
@@ -113,7 +113,7 @@ impl Day4 {
         return true;
     }
 
-    fn check_for_a(&self, from_coord: Coord, grid: &Grid) -> bool {
+    fn check_for_a(&self, from_coord: Coord, grid: &Grid<char>) -> bool {
         let x = from_coord.x;
         let y = from_coord.y;
 
@@ -142,7 +142,7 @@ impl Day4 {
 }
 
 struct Input {
-    grid: Grid,
+    grid: Grid<char>,
 }
 
 impl Input {
@@ -179,23 +179,6 @@ impl Input {
 struct Coord {
     x: usize,
     y: usize,
-}
-
-struct Grid {
-    data: Vec<Vec<char>>,
-}
-
-impl Grid {
-    fn new(data: Vec<Vec<char>>) -> Self {
-        Grid { data }
-    }
-
-    fn get(&self, x: usize, y: usize) -> Option<char> {
-        self.data
-            .get(y)
-            .and_then(|r| r.get(x))
-            .and_then(|c| Some(*c))
-    }
 }
 
 #[test]

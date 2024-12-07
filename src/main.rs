@@ -2,11 +2,13 @@ use anyhow::Result;
 use std::{fs, time::Instant};
 
 use anyhow::bail;
-use year_2024::{day_1::Day1, day_2::Day2, day_3::Day3, day_4::Day4, day_5::Day5, day_6::Day6};
+use year_2024::{
+    day_1::Day1, day_2::Day2, day_3::Day3, day_4::Day4, day_5::Day5, day_6::Day6, day_7::Day7,
+};
 mod year_2024;
 
 fn main() {
-    let puzzle = Day6::new();
+    let puzzle = Day7::new();
     perform_solution("Part 1", || puzzle.solve_part_one());
     perform_solution("Part 2", || puzzle.solve_part_two());
 }

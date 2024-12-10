@@ -1,13 +1,14 @@
 use anyhow::Result;
 use std::{fs, time::Instant};
-use year_2024::{day_8::Day8, day_9::Day9};
+use year_2024::{day_10::Day10, day_8::Day8, day_9::Day9};
 
 use anyhow::bail;
 mod year_2024;
 
 fn main() {
-    let puzzle = Day9::new();
+    let puzzle = Day10::new();
     let input = puzzle.load_input();
+    println!("Process solutions for day {} year {}", puzzle.day(), puzzle.year());
     perform_solution("Part 1", || puzzle.solve_part_one(&input));
     perform_solution("Part 2", || puzzle.solve_part_two(&input));
 }
